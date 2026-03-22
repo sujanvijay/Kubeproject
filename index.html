@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo App</title>
+</head>
+
+<body>
+
+<h1>Node.js Todo App</h1>
+
+<input type="text" id="taskInput" placeholder="Enter task">
+<button onclick="addTask()">Add Task</button>
+
+<h2>Tasks</h2>
+<ul id="taskList"></ul>
+
+<script>
+
+async function loadTasks(){
+ const res = await fetch("/tasks");
+ const tasks = await res.json();
+
+ const list = document.getElementById("taskList");
+ list.innerHTML="";
+
+ tasks.forEach((task,index)=>{
+  const li = document.createElement("li");
+  li.innerHTML = task.task + " <button onclick='deleteTask("+index+")'>Delete</button>";
+  list.appendChild(li);
+ });
+}
+
+async function addTask(){
+ const task = document.getElementById("taskInput").value;
+
+ await fetch("/tasks",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body: JSON.stringify({task})
+ });
+
+ loadTasks();
+}
+
+async function deleteTask(id){
+ await fetch("/tasks/"+id,{
+  method:"DELETE"
+ });
+
+ loadTasks();
+}
+
+loadTasks();
+
+</script>
+
+</body>
+</html>
