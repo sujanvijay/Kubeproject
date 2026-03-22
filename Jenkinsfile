@@ -5,7 +5,6 @@ pipeline {
     // ENVIRONMENT — all config in one place
     // ─────────────────────────────────────────────────────────────────
     environment {
-        DOCKERHUB_CRED   = credentials('dockerhub')
         DOCKERHUB_USER    = 'sauravnirala'
 
         // Image names & tags
@@ -86,7 +85,15 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 echo "Logging in to DockerHub as ${DOCKERHUB_USER}..."
-                sh "echo ${DOCKERHUB_CRED} | docker login -u ${DOCKERHUB_USER} --password-stdin"
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    '''
+                }
             }
         }
  
