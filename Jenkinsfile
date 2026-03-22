@@ -85,24 +85,40 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Push to DockerHub') {
             steps {
-                sh "echo ${DOCKERHUB_CREDS_PSW} | docker login -u ${DOCKERHUB_CREDS_USR} --password-stdin"
-                parallel (
-                    "Push Todo App": {
+                echo "Logging in to DockerHub as ${DOCKERHUB_USER}..."
+                sh "echo ${DOCKERHUB_CREDS} | docker login -u ${DOCKERHUB_USER} --password-stdin"
+            }
+        }
+ 
+        stage('Push Images') {
+            parallel {
+                stage('Push Todo App') {
+                    steps {
                         sh """
                             docker push ${TODO_IMAGE}
                             docker push ${TODO_LATEST}
-                            echo "Pushed ${TODO_IMAGE}"
+                            echo "Pushed: ${TODO_IMAGE}"
+                            echo "Pushed: ${TODO_LATEST}"
                         """
-                    },
-                    "Push Tic Tac Toe": {
+                    }
+                }
+                stage('Push Tic Tac Toe') {
+                    steps {
                         sh """
                             docker push ${TICTACTOE_IMAGE}
                             docker push ${TICTACTOE_LATEST}
-                            echo "Pushed ${TICTACTOE_IMAGE}"
+                            echo "Pushed: ${TICTACTOE_IMAGE}"
+                            echo "Pushed: ${TICTACTOE_LATEST}"
                         """
                     }
-                )
+                }
+            }
+        }
+ 
+        stage('Docker Logout') {
+            steps {
                 sh "docker logout"
+                echo "All images pushed to DockerHub successfully."
             }
         }
 
