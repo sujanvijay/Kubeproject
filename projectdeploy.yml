@@ -92,7 +92,6 @@ spec:
 ---
 # ─────────────────────────────────────────────────────────────
 # 5. INGRESS — Route /todo and /tictactoe paths
-#    Replace myapp.example.com with your domain or Minikube IP
 # ─────────────────────────────────────────────────────────────
 apiVersion: networking.k8s.io/v1
 kind: Ingress
