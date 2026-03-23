@@ -7,29 +7,24 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
 spec:
   ingressClassName: nginx
   rules:
    - http:
         paths:
-          - path: /todo
-            pathType: Prefix
+          - path: /todo(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: todo-app-service
                 port:
                   number: 80
-          - path: /tictactoe
-            pathType: Prefix
+
+          - path: /tictactoe(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: tictactoe-service
-                port:
-                  number: 80
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-app-service
                 port:
                   number: 80
