@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,48 +18,41 @@
 <script>
 
 async function loadTasks(){
-  const res = await fetch("/tasks");
-  const tasks = await res.json();
+ const res = await fetch("/tasks");
+ const tasks = await res.json();
 
-  const list = document.getElementById("taskList");
-  list.innerHTML = "";
+ const list = document.getElementById("taskList");
+ list.innerHTML="";
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.innerHTML = task.task +
-      " <button onclick='deleteTask("+index+")'>Delete</button>";
-    list.appendChild(li);
-  });
+ tasks.forEach((task,index)=>{
+  const li = document.createElement("li");
+  li.innerHTML = task.task + " <button onclick='deleteTask("+index+")'>Delete</button>";
+  list.appendChild(li);
+ });
 }
 
 async function addTask(){
-  const input = document.getElementById("taskInput");
-  const task = input.value;
+ const task = document.getElementById("taskInput").value;
 
-  if(!task){
-    alert("Enter a task");
-    return;
-  }
+ await fetch("/tasks",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body: JSON.stringify({task})
+ });
 
-  await fetch("/tasks", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ task })
-  });
-
-  input.value = "";
-  await loadTasks();
+ loadTasks();
 }
 
 async function deleteTask(id){
-  await fetch("/tasks/" + id, {
-    method: "DELETE"
-  });
+ await fetch("/tasks/"+id,{
+  method:"DELETE"
+ });
 
-  await loadTasks();
+ loadTasks();
 }
 
 loadTasks();
+
 </script>
 
 </body>
