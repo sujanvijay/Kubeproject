@@ -15,43 +15,51 @@
 <ul id="taskList"></ul>
 
 <script>
+const BASE_URL = "http://localhost:3000";
 
 async function loadTasks(){
- const res = await fetch("/tasks");
- const tasks = await res.json();
+  const res = await fetch(BASE_URL + "/tasks");
+  const tasks = await res.json();
 
- const list = document.getElementById("taskList");
- list.innerHTML="";
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
 
- tasks.forEach((task,index)=>{
-  const li = document.createElement("li");
-  li.innerHTML = task.task + " <button onclick='deleteTask("+index+")'>Delete</button>";
-  list.appendChild(li);
- });
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = task.task +
+      " <button onclick='deleteTask("+index+")'>Delete</button>";
+    list.appendChild(li);
+  });
 }
 
 async function addTask(){
- const task = document.getElementById("taskInput").value;
+  const input = document.getElementById("taskInput");
+  const task = input.value;
 
- await fetch("/tasks",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({task})
- });
+  if(!task){
+    alert("Enter a task");
+    return;
+  }
 
- loadTasks();
+  await fetch(BASE_URL + "/tasks", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ task })
+  });
+
+  input.value = "";
+  await loadTasks();
 }
 
 async function deleteTask(id){
- await fetch("/tasks/"+id,{
-  method:"DELETE"
- });
+  await fetch(BASE_URL + "/tasks/" + id, {
+    method: "DELETE"
+  });
 
- loadTasks();
+  await loadTasks();
 }
 
 loadTasks();
-
 </script>
 
 </body>
