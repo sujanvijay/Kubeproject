@@ -13,21 +13,21 @@ spec:
    - http:
         paths:
           - path: /todo(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: todo-app-service
                 port:
                   number: 80
           - path: /tictactoe(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: tictactoe-service
                 port:
                   number: 80
           - path: /
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: todo-app-service
