@@ -1,33 +1,29 @@
-const express = require("express");
+onst express = require("express");
 const path = require("path");
-
 const app = express();
 
 app.use(express.json());
 
 let tasks = [];
 
-// ✅ API routes FIRST
-app.get("/tasks", (req, res) => {
-  res.json(tasks);
+app.get("/", (req,res)=>{
+ res.sendFile(path.join(__dirname,"index.html"));
 });
 
-app.post("/tasks", (req, res) => {
-  console.log("BODY:", req.body);
-  tasks.push({ task: req.body.task });
-  res.json({ message: "Task Added" });
+app.get("/tasks",(req,res)=>{
+ res.json(tasks);
 });
 
-app.delete("/tasks/:id", (req, res) => {
-  tasks.splice(req.params.id, 1);
-  res.json({ message: "Task Deleted" });
+app.post("/tasks",(req,res)=>{
+ tasks.push(req.body);
+ res.send("Task Added");
 });
 
-// ✅ Serve HTML AFTER routes
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.delete("/tasks/:id",(req,res)=>{
+ tasks.splice(req.params.id,1);
+ res.send("Task Deleted");
 });
 
-app.listen(3000, "0.0.0.0", () => {
-  console.log("Server running");
+app.listen(3000,()=>{
+ console.log("Server running on port 3000");
 });
