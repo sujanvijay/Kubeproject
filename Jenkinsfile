@@ -145,6 +145,7 @@ pipeline {
                     sed -i 's|sauravnirala/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/all-apps.yml
 
                     kubectl apply -f /tmp/all-apps.yml
+                    kubectl apply -f ingress.yml
 
                     # ── Wait for both apps to roll out ────────────────────────
                     echo "Waiting for Todo App..."

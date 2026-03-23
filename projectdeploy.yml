@@ -1,13 +1,3 @@
-# =============================================================
-# Combined Kubernetes Manifest
-# Includes:
-#   1. Todo App      — sauravnirala/nodejs-todo-devops-project:v1
-#   2. Tic Tac Toe   — sauravnirala/tictactoe-app:v1
-#   3. Ingress       — routes /todo and /tictactoe paths
-# Apply with: kubectl apply -f k8s/all-apps.yaml
-# =============================================================
-
-
 # ─────────────────────────────────────────────────────────────
 # 1. TODO APP — Deployment
 # ─────────────────────────────────────────────────────────────
@@ -89,42 +79,3 @@ spec:
     - port: 80
       targetPort: 8081
   type: ClusterIP
----
-# ─────────────────────────────────────────────────────────────
-# 5. INGRESS — Route /todo and /tictactoe paths
-# ─────────────────────────────────────────────────────────────
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: multi-app-ingress
-  namespace: myapp
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-spec:
-  ingressClassName: nginx
-  rules:
-      http:
-        paths:
-          - path: /todo
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-app-service
-                port:
-                  number: 3000
-          - path: /tictactoe
-            pathType: Prefix
-            backend:
-              service:
-                name: tictactoe-service
-                port:
-                  number: 8081
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-app-service
-                port:
-                  number: 3000
