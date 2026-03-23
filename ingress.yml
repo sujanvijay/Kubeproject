@@ -4,9 +4,7 @@ metadata:
   name: multi-app-ingress
   namespace: myapp
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -27,7 +25,7 @@ spec:
                 port:
                   number: 80
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: todo-app-service
