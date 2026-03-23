@@ -141,10 +141,10 @@ pipeline {
                     # Substitute real image tags into a temp copy of all-apps.yml
                     cp projectdeploy.yml /tmp/all-apps.yml
 
-                    sed -i 's|sauravnirala/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g'  /tmp/projectdeploy.yaml
-                    sed -i 's|sauravnirala/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/projectdeploy.yaml
+                    sed -i 's|sauravnirala/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g'  /tmp/projectdeploy.yml
+                    sed -i 's|sauravnirala/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/projectdeploy.yml
 
-                    kubectl apply -f /tmp/projectdeploy.yaml
+                    kubectl apply -f /tmp/projectdeploy.yml
 
                     # ── Wait for both apps to roll out ────────────────────────
                     echo "Waiting for Todo App..."
