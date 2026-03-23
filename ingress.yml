@@ -18,18 +18,18 @@ spec:
               service:
                 name: todo-app-service
                 port:
-                  number: 3000
+                  number: 80
           - path: /tictactoe
             pathType: Prefix
             backend:
               service:
                 name: tictactoe-service
                 port:
-                  number: 8081
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: todo-app-service
                 port:
-                  number: 3000
+                  number: 80
