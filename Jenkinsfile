@@ -135,7 +135,6 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    # ── Namespace ────────────────────────────────────────────
                     kubectl apply -f namespace.yml
 
                     # ── All Apps (todo + tictactoe + ingress) ─────────────────
