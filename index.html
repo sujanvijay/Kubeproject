@@ -40,7 +40,7 @@ async function addTask(){
     return;
   }
 
-  await fetch(BASE_URL + "/tasks", {
+  await fetch("/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ task })
@@ -51,7 +51,7 @@ async function addTask(){
 }
 
 async function deleteTask(id){
-  await fetch(BASE_URL + "/tasks/" + id, {
+  await fetch("/tasks/" + id, {
     method: "DELETE"
   });
 
