@@ -12,14 +12,14 @@ spec:
   rules:
    - http:
         paths:
-          - path: /todo
+          - path: /todo(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: todo-app-service
                 port:
                   number: 80
-          - path: /tictactoe
+          - path: /tictactoe(/|$)(.*)
             pathType: Prefix
             backend:
               service:
