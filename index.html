@@ -15,10 +15,9 @@
 <ul id="taskList"></ul>
 
 <script>
-const BASE_URL = "http://localhost:3000";
 
 async function loadTasks(){
-  const res = await fetch(BASE_URL + "/tasks");
+  const res = await fetch("/tasks");
   const tasks = await res.json();
 
   const list = document.getElementById("taskList");
