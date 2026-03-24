@@ -47,7 +47,7 @@ pipeline {
                 stage('Build Todo App') {
                     steps {
                         sh """
-                            docker build -t ${TODO_IMAGE} -t ${TODO_LATEST} -f Dockerfile.todo .
+                            docker build --no-cache -t ${TODO_IMAGE} -t ${TODO_LATEST} -f Dockerfile.todo .
                             echo "Built ${TODO_IMAGE}"
                         """
                     }
@@ -55,7 +55,7 @@ pipeline {
                 stage('Build Tic Tac Toe') {
                     steps {
                         sh """
-                            docker build -t ${TICTACTOE_IMAGE} -t ${TICTACTOE_LATEST} -f Dockerfile.tictactoe .
+                            docker build --no-cache -t ${TICTACTOE_IMAGE} -t ${TICTACTOE_LATEST} -f Dockerfile.tictactoe .
                             echo "Built ${TICTACTOE_IMAGE}"
                         """
                     }
