@@ -5,7 +5,7 @@ pipeline {
     // ENVIRONMENT — all config in one place
     // ─────────────────────────────────────────────────────────────────
     environment {
-        DOCKERHUB_USER    = 'sauravnirala'
+        DOCKERHUB_USER    = 'sujanvijay'
 
         // Image names & tags
         TODO_REPO         = 'nodejs-todo-devops-project'
@@ -18,7 +18,7 @@ pipeline {
         TICTACTOE_LATEST  = "${DOCKERHUB_USER}/tictactoe-app:latest"
 
         // Git — repo that contains both app source + k8s/all-apps.yaml
-        GIT_REPO_URL      = 'https://github.com/sauravnirala/Kubeproject.git'
+        GIT_REPO_URL      = 'https://github.com/sujanvijay/Kubeproject.git'
         GIT_BRANCH        = 'main'
 
         // Kubernetes
@@ -86,7 +86,7 @@ pipeline {
             steps {
                 echo "Logging in to DockerHub as ${DOCKERHUB_USER}..."
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
+                    credentialsId: 'Docker_CRED',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
@@ -141,8 +141,8 @@ pipeline {
                     # Substitute real image tags into a temp copy of all-apps.yml
                     cp projectdeploy.yml /tmp/all-apps.yml
 
-                    sed -i 's|sauravnirala/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g'  /tmp/all-apps.yml
-                    sed -i 's|sauravnirala/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/all-apps.yml
+                    sed -i 's|sujanvijay/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g'  /tmp/all-apps.yml
+                    sed -i 's|sujanvijay/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/all-apps.yml
 
                     kubectl apply -f /tmp/all-apps.yml
                     kubectl apply -f ingress.yml
