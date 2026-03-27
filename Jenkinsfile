@@ -137,7 +137,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    // kubectl apply -f namespace.yml
+                    # kubectl apply -f namespace.yml
 
                     # ── All Apps (todo + tictactoe + ingress) ─────────────────
                     # Substitute real image tags into a temp copy of all-apps.yml
