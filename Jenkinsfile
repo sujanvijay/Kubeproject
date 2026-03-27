@@ -135,34 +135,29 @@ pipeline {
         // STAGE 5 — Deploy to Kubernetes
         // ─────────────────────────────────────────────
         stage('Deploy to Kubernetes') {
-    steps {
-        sh '''
-            export KUBECONFIG=/var/lib/jenkins/.kube/config
-            export AWS_DEFAULT_REGION=ap-south-1
+            steps {
+                sh """
+                    kubectl apply -f namespace.yml
 
-            echo "Deploying applications..."
+                    # ── All Apps (todo + tictactoe + ingress) ─────────────────
+                    # Substitute real image tags into a temp copy of all-apps.yml
+                    cp projectdeploy.yml /tmp/all-apps.yml
 
-            # Update image tags
-            cp projectdeploy.yml /tmp/all-apps.yml
+                    sed -i 's|sujanvijay/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g'  /tmp/all-apps.yml
+                    sed -i 's|sujanvijay/tictactoe-app:v1|${TICTACTOE_IMAGE}|g'          /tmp/all-apps.yml
 
-            sed -i "s|sujanvijay/nodejs-todo-devops-project:v1|${TODO_IMAGE}|g" /tmp/all-apps.yml
-            sed -i "s|sujanvijay/tictactoe-app:v1|${TICTACTOE_IMAGE}|g" /tmp/all-apps.yml
+                    kubectl apply -f /tmp/all-apps.yml
+                    kubectl apply -f ingress.yml
 
-            # Deploy apps
-            kubectl apply -f /tmp/all-apps.yml --validate=false
+                    # ── Wait for both apps to roll out ────────────────────────
+                    echo "Waiting for Todo App..."
+                    kubectl rollout status deployment/todo-app  -n ${K8S_NAMESPACE}
 
-            echo "Waiting for Todo App..."
-            kubectl rollout status deployment/todo-app
-
-            echo "Waiting for Tic Tac Toe..."
-            kubectl rollout status deployment/tictactoe
-
-            # Apply ingress AFTER apps are ready
-            echo "Applying Ingress..."
-            kubectl apply -f ingress.yml --validate=false
-        '''
-    }
-}
+                    echo "Waiting for Tic Tac Toe..."
+                    kubectl rollout status deployment/tictactoe -n ${K8S_NAMESPACE}
+                """
+            }
+        }
 
         
         // ─────────────────────────────────────────────
