@@ -137,7 +137,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    kubectl apply -f namespace.yml
+                    // kubectl apply -f namespace.yml
 
                     # ── All Apps (todo + tictactoe + ingress) ─────────────────
                     # Substitute real image tags into a temp copy of all-apps.yml
@@ -151,10 +151,10 @@ pipeline {
 
                     # ── Wait for both apps to roll out ────────────────────────
                     echo "Waiting for Todo App..."
-                    kubectl rollout status deployment/todo-app  -n ${K8S_NAMESPACE}
+                    kubectl rollout status deployment/todo-app
 
                     echo "Waiting for Tic Tac Toe..."
-                    kubectl rollout status deployment/tictactoe -n ${K8S_NAMESPACE}
+                    kubectl rollout status deployment/tictactoe 
                 """
             }
         }
