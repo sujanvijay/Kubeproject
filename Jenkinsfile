@@ -26,7 +26,7 @@ pipeline {
         TODO_PORT         = '3000'
         TICTACTOE_PORT    = '8081'
         KUBECONFIG = '/var/lib/jenkins/.kube/config'
-        AWS_DEFAULT_REGION = 'ap-south-1
+        AWS_DEFAULT_REGION = 'ap-south-1'
     }
 
     stages {
